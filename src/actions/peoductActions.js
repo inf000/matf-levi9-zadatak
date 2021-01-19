@@ -72,12 +72,9 @@ const deleteProduct = payload => dispatch => {
         })
 };
 
-const getProducts = payload => dispatch => {
-    dispatch({
-        type: PRODUCTS_SET_IS_FETCHING_PRODUCTS,
-        payload: true,
-    });
-    console.log('pozvao')
+const getProducts = () => dispatch => {
+    dispatch(setFetchingProducts(true));
+
     return axios.get(
         `${API_BASE_URL}/products`,
         {
@@ -86,22 +83,26 @@ const getProducts = payload => dispatch => {
             },
         })
         .then(response => {
-            dispatch({
-                type: PRODUCTS_SET_PRODUCTS,
-                payload: response.data.data,
-            });
-            dispatch({
-                type: PRODUCTS_SET_IS_FETCHING_PRODUCTS,
-                payload: false,
-            });
+            dispatch(setProducts(response.data.data))
+            dispatch(setFetchingProducts(false));
         })
         .catch(error => {
-            console.log('pozvao')
-            dispatch({
-                type: PRODUCTS_SET_IS_FETCHING_PRODUCTS,
-                payload: false,
-            });
+            dispatch(setFetchingProducts(false));
         })
 };
+
+const setFetchingProducts = payload => {
+    return {
+        type: PRODUCTS_SET_IS_FETCHING_PRODUCTS,
+        payload: payload,
+    }
+}
+
+const setProducts = payload => {
+    return {
+        type: PRODUCTS_SET_PRODUCTS,
+        payload: payload,
+    }
+}
 
 export { createProduct, getProducts, deleteProduct }

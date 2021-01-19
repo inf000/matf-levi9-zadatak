@@ -1,5 +1,5 @@
 import AddProduct from './AddProduct';
-import AllProducts from './AllProducts';
+import { AllProducts } from './AllProducts';
 export {
     AddProduct,
     AllProducts
